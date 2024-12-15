@@ -62,3 +62,39 @@ public:
         return score;
     }
 };
+
+
+// and this is the solution in O(n)
+// i am using a vector pair to store the elements and their initial indices. This vector is sorted and being traversed.. so for every index it changes nums 
+class Solution {
+public:
+    long long findScore(vector<int>& nums) {
+        long long score = 0;
+        vector<std::pair<int, int>> sorted;
+        for (int i = 0; i < nums.size(); ++i) {
+            sorted.emplace_back(nums[i], i); // Store the value and its index
+        }
+        sort(sorted.begin(), sorted.end());
+
+        for (const auto& p : sorted) {
+           
+            if(nums[p.second] == -1){
+                continue;
+            }
+            
+            nums[p.second] = -1;
+            
+            score += p.first;
+            if (p.second > 0) {
+                nums[p.second - 1] = -1; 
+            }
+            if (p.second < nums.size() - 1) {
+                nums[p.second + 1] = -1;
+            }
+        }
+
+
+        return score;
+    }
+};
+
